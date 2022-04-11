@@ -774,7 +774,7 @@ else inputPairReadsTrimGalore.close()
 
 process FastQCFQ {
     label 'FastQC'
-    label 'cpus_2'
+    label 'process_low'
 
     tag "${idPatient}-${idRun}"
 
@@ -796,7 +796,7 @@ process FastQCFQ {
 
 process FastQCBAM {
     label 'FastQC'
-    label 'cpus_2'
+    label 'process_low'
 
     tag "${idPatient}-${idRun}"
 
@@ -822,6 +822,7 @@ fastQCReport = fastQCReport.dump(tag:'FastQC')
 
 process TrimGalore {
     label 'TrimGalore'
+    label 'cpus_1'
 
     tag "${idPatient}-${idRun}"
 
@@ -1026,8 +1027,6 @@ else {
 }
 
 process MapReads {
-    label 'cpus_max'
-
     tag "${idPatient}-${idRun}"
 
     input:
@@ -1181,7 +1180,7 @@ process IndexBamMergedForSentieon {
 (bam_mapped_merged, bam_mapped_merged_to_index) = bam_mapped_merged.into(2)
 
 process IndexBamFile {
-    label 'cpus_8'
+    label 'process_high'
 
     tag "${idPatient}-${idSample}"
 
@@ -1232,7 +1231,7 @@ tsv_bam_indexed_sample
 // STEP 2: MARKING DUPLICATES
 
 process MarkDuplicates {
-    label 'cpus_16'
+    label 'process_high'
 
     tag "${idPatient}-${idSample}"
 
@@ -1375,7 +1374,7 @@ process Sentieon_Dedup {
 // STEP 3: CREATING RECALIBRATION TABLES
 
 process BaseRecalibrator {
-    label 'cpus_1'
+    label 'cpus_4'
 
     tag "${idPatient}-${idSample}-${intervalBed.baseName}"
 
